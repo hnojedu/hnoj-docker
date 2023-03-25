@@ -9,8 +9,8 @@
 # The settings listed here are of special interest in configuring the site.
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# You may use <http://www.miniwebtool.com/django-secret-key-generator/>
-# to generate this key.
+# You may use this command to generate a key:
+# python3 -c 'from django.core.management.utils import get_random_secret_key;print(get_random_secret_key())'
 SECRET_KEY = os.environ.get('SECRET_KEY', '')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', '0') == '1'
@@ -54,8 +54,8 @@ DATABASES = {
 
 # Internationalization.
 # Documentation: <https://docs.djangoproject.com/en/1.11/topics/i18n/>
-LANGUAGE_CODE = 'en-ca'
-DEFAULT_USER_TIME_ZONE = 'America/Toronto'
+LANGUAGE_CODE = 'vi'
+DEFAULT_USER_TIME_ZONE = 'Asia/Ho_Chi_Minh'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
@@ -128,15 +128,31 @@ STATIC_URL = '/static/'
 # Uncomment to use hashed filenames with the cache framework.
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
 
+DMOJ_RESOURCES = '/assets/resources/'
+
 ############################################
 ########## DMOJ-specific settings ##########
 ############################################
 
 ## DMOJ site display settings.
-SITE_NAME = 'DMOJ'
-SITE_LONG_NAME = 'DMOJ: Modern Online Judge'
+SITE_NAME = 'HNOJ'
+SITE_LONG_NAME = 'HNOJ: Hanoi Online Judge'
 SITE_ADMIN_EMAIL = 'admin@example.com'
 TERMS_OF_SERVICE_URL = None
+
+## Media files settings.
+# This is the directory where all the media files are stored.
+# Change this to somewhere more permanent.
+# You must configure your webserver to serve this directory in production.
+MEDIA_ROOT = '/media/'
+
+# URL to access media files.
+# MEDIA_URL = '/media/'
+
+## Problem data settings.
+# This is the directory where all the problem data are stored.
+# Change this to somewhere more permanent.
+DMOJ_PROBLEM_DATA_ROOT = '/problems/'
 
 ## Bridge controls.
 # The judge connection address and port; where the judges will connect to the site.
@@ -149,10 +165,15 @@ BRIDGED_DJANGO_ADDRESS = [('bridged', 9998)]
 
 ## DMOJ features.
 # Set to True to enable full-text searching for problems.
-ENABLE_FTS = True
+ENABLE_FTS = False
 
 # Set of email providers to ban when a user registers, e.g., {'throwawaymail.com'}.
 BAD_MAIL_PROVIDERS = set()
+
+# The number of submissions that a staff user can rejudge at once without
+# requiring the permission 'Rejudge a lot of submissions'.
+# Uncomment to change the submission limit.
+#DMOJ_SUBMISSIONS_REJUDGE_LIMIT = 10
 
 ## Event server.
 # Uncomment to enable live updating.
@@ -176,6 +197,10 @@ EVENT_DAEMON_POLL = '/channels/'
 #EVENT_DAEMON_AMQP = '<amqp:// URL to connect to, including username and password>'
 #EVENT_DAEMON_AMQP_EXCHANGE = '<AMQP exchange to use>'
 
+# Celery
+CELERY_BROKER_URL = 'redis://redis:6379/0'
+CELERY_RESULT_BACKEND = 'redis://redis:6379/0'
+
 ## CDN control.
 # Base URL for a copy of ace editor.
 # Should contain ace.js, along with mode-*.js.
@@ -186,7 +211,7 @@ SELECT2_CSS_URL = '//cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.mi
 
 # A map of Earth in Equirectangular projection, for timezone selection.
 # Please try not to hotlink this poor site.
-TIMEZONE_MAP = 'http://naturalearth.springercarto.com/ne3_data/8192/textures/3_no_ice_clouds_8k.jpg'
+TIMEZONE_MAP = 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Blue_Marble_2002.png/1024px-Blue_Marble_2002.png'
 
 ## Camo (https://github.com/atmos/camo) usage.
 #DMOJ_CAMO_URL = "<URL to your camo install>"
@@ -213,32 +238,60 @@ DMOJ_PDF_PROBLEM_CACHE = '/pdfcache'
 # Should be an internal location mapped to the above directory.
 DMOJ_PDF_PROBLEM_INTERNAL = '/pdfcache'
 
+# Enable Selenium PDF generation
+USE_SELENIUM = False
 
+## Data download settings.
+# Uncomment to allow users to download their data
 DMOJ_USER_DATA_DOWNLOAD = True
-DMOJ_USER_DATA_CACHE = '/datacache'
-DMOJ_USER_DATA_INTERNAL = '/datacache'
+
+# Directory to cache user data downloads.
+# It is the administrator's responsibility to clean up old files.
+DMOJ_USER_DATA_CACHE = '/userdatacache'
+
+# Path to use for nginx's X-Accel-Redirect feature.
+# Should be an internal location mapped to the above directory.
+DMOJ_USER_DATA_INTERNAL = '/userdatacache'
+
+# How often a user can download their data.
+DMOJ_USER_DATA_DOWNLOAD_RATELIMIT = datetime.timedelta(days=1)
+
+# Uncomment to allow contest authors to download contest data
+DMOJ_CONTEST_DATA_DOWNLOAD = True
+
+# Directory to cache contest data downloads.
+# It is the administrator's responsibility to clean up old files.
+DMOJ_CONTEST_DATA_CACHE = '/contestdatacache'
+
+# Path to use for nginx's X-Accel-Redirect feature.
+# Should be an internal location mapped to the above directory.
+DMOJ_CONTEST_DATA_INTERNAL = '/contestdatacache'
+
+# How often contest data can be exported.
+# This applies per contest, not per user.
+DMOJ_CONTEST_DATA_DOWNLOAD_RATELIMIT = datetime.timedelta(days=1)
 
 #############
 ## Mathoid ##
 #############
 # Documentation: https://github.com/wikimedia/mathoid
-MATHOID_URL = 'http://mathoid:10044'
-MATHOID_CACHE_ROOT = '/cache/mathoid/'
-MATHOID_CACHE_URL = '//{host}/mathoid/'.format(host=HOST)
+# MATHOID_URL = 'http://mathoid:10044'
+# MATHOID_CACHE_ROOT = '/cache/mathoid/'
+# MATHOID_CACHE_URL = '//{host}/mathoid/'.format(host=HOST)
 
 ############
 ## Pdfoid ##
 ############
 
-DMOJ_PDF_PDFOID_URL = 'http://pdfoid:8888'
+# DMOJ_PDF_PDFOID_URL = 'http://pdfoid:8888'
 
 ############
 ## Texoid ##
 ############
 
-TEXOID_URL = 'http://texoid:8888'
-TEXOID_CACHE_ROOT = '/cache/texoid/'
-TEXOID_CACHE_URL = '//{host}/texoid/'.format(host=HOST)
+# TEXOID_URL = 'http://texoid:8888'
+# TEXOID_CACHE_ROOT = '/cache/texoid/'
+# TEXOID_CACHE_URL = '//{host}/texoid/'.format(host=HOST)
 
 ## ======== Logging Settings ========
 # Documentation: https://docs.djangoproject.com/en/1.9/ref/settings/#logging
@@ -292,15 +345,8 @@ LOGGING = {
 #SESSION_COOKIE_SECURE = True
 
 REGISTRATION_OPEN = False
-DMOJ_RATING_COLORS = True
 X_FRAME_OPTIONS = 'DENY'
 
-CELERY_BROKER_URL = 'redis://redis:6379/0'
-CELERY_RESULT_BACKEND = 'redis://redis:6379/0'
+FILE_UPLOAD_PERMISSIONS = 0o644
 
-DMOJ_PROBLEM_DATA_ROOT = '/problems/'
-
-DMOJ_RESOURCES = '/assets/resources/'
-
-MEDIA_ROOT = '/media/'
-MEDIA_URL = '/media/'
+VNOJ_CP_TICKET = 5

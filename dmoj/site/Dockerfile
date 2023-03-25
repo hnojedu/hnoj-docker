@@ -1,4 +1,4 @@
-FROM ninjaclasher/dmoj-base:latest
+FROM hnoj/hnoj-base:latest
 
 EXPOSE 8000
 

@@ -1,63 +1,64 @@
 version: '3.7'
 services:
   db:
-    container_name: dmoj_mysql
+    container_name: hnoj_mysql
     image: mariadb
-    restart: always
+    restart: unless-stopped
     volumes:
       - ./database/:/var/lib/mysql/
     env_file: [environment/mysql.env, environment/mysql-admin.env]
     networks: [db]
   redis:
-    container_name: dmoj_redis
+    container_name: hnoj_redis
     image: redis:alpine
-    restart: always
-    networks: [site]
-  texoid:
-    build:
-      context: .
-      dockerfile: ./texoid/Dockerfile
-    image: ninjaclasher/dmoj-texoid
-    init: true
     restart: unless-stopped
     networks: [site]
-  pdfoid:
-    build:
-      context: .
-      dockerfile: ./pdfoid/Dockerfile
-    image: ninjaclasher/dmoj-pdfoid
-    init: true
-    restart: unless-stopped
-    networks: [site]
-    cap_add:
-      - SYS_ADMIN
-  mathoid:
-    build:
-      context: .
-      dockerfile: ./mathoid/Dockerfile
-    image: ninjaclasher/dmoj-mathoid
-    init: true
-    restart: unless-stopped
-    volumes:
-      - ./mathoid/config.yaml:/node_modules/mathoid/config.yaml
-    networks: [site]
+  # texoid:
+  #   build:
+  #     context: .
+  #     dockerfile: ./texoid/Dockerfile
+  #   image: ninjaclasher/dmoj-texoid
+  #   init: true
+  #   restart: unless-stopped
+  #   networks: [site]
+  # pdfoid:
+  #   build:
+  #     context: .
+  #     dockerfile: ./pdfoid/Dockerfile
+  #   image: ninjaclasher/dmoj-pdfoid
+  #   init: true
+  #   restart: unless-stopped
+  #   networks: [site]
+  #   cap_add:
+  #     - SYS_ADMIN
+  # mathoid:
+  #   build:
+  #     context: .
+  #     dockerfile: ./mathoid/Dockerfile
+  #   image: ninjaclasher/dmoj-mathoid
+  #   init: true
+  #   restart: unless-stopped
+  #   volumes:
+  #     - ./mathoid/config.yaml:/node_modules/mathoid/config.yaml
+  #   networks: [site]
   base:
     build:
       context: .
       dockerfile: ./base/Dockerfile
-    image: ninjaclasher/dmoj-base
+    image: hnoj/hnoj-base
     network_mode: none
   site:
     build:
       context: .
       dockerfile: ./site/Dockerfile
-    image: ninjaclasher/dmoj-site
+    image: hnoj/hnoj-site
     init: true
     restart: unless-stopped
     volumes:
       - assets:/assets/
       - pdfcache:/pdfcache/
-      - datacache:/datacache/
+      - userdatacache:/userdatacache/
+      - contestdatacache:/contestdatacache/
       - cache:/cache/
       - ./media/:/media/
       - ./problems/:/problems/
@@ -67,24 +68,27 @@ services:
     networks: [site, nginx, db]
     depends_on: [base, db, redis]
   celery:
+    container_name: hnoj_celery
     build:
       context: .
       dockerfile: ./celery/Dockerfile
-    image: ninjaclasher/dmoj-celery
+    image: hnoj/hnoj-celery
     init: true
     restart: unless-stopped
     volumes:
-      - datacache:/datacache/
+      - userdatacache:/userdatacache/
+      - contestdatacache:/contestdatacache/
       - ./repo/:/site/
     working_dir: /site/
     env_file: [environment/mysql.env, environment/site.env]
     networks: [site, db]
     depends_on: [base, db, redis]
   bridged:
+    container_name: hnoj_bridged
     build:
       context: .
       dockerfile: ./bridged/Dockerfile
-    image: ninjaclasher/dmoj-bridged
+    image: hnoj/hnoj-bridged
     init: true
     restart: unless-stopped
     volumes:
@@ -94,13 +98,15 @@ services:
     env_file: [environment/mysql.env, environment/site.env]
     networks: [site, nginx, db]
     ports:
+      - 9998:9998
       - 9999:9999
     depends_on: [base, db, redis]
   wsevent:
+    container_name: hnoj_wsevent
     build:
       context: .
       dockerfile: ./wsevent/Dockerfile
-    image: ninjaclasher/dmoj-wsevent
+    image: hnoj/hnoj-wsevent
     init: true
     restart: unless-stopped
     volumes:
@@ -109,15 +115,16 @@ services:
     env_file: [environment/mysql.env, environment/site.env]
     networks: [site, nginx]
   nginx:
-    container_name: dmoj_nginx
+    container_name: hnoj_nginx
     image: nginx:alpine
-    restart: always
+    restart: unless-stopped
     ports:
       - 80:80
     volumes:
       - assets:/assets/
       - pdfcache:/pdfcache/
-      - datacache:/datacache/
+      - userdatacache:/userdatacache/
+      - contestdatacache:/contestdatacache/
       - cache:/cache/
       - ./media/:/media/
       - ./nginx/conf.d/:/etc/nginx/conf.d/
@@ -130,5 +137,6 @@ networks:
 volumes:
   assets:
   pdfcache:
-  datacache:
+  userdatacache:
+  contestdatacache:
   cache:

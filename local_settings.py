@@ -243,7 +243,7 @@ USE_SELENIUM = False
 
 ## Data download settings.
 # Uncomment to allow users to download their data
-DMOJ_USER_DATA_DOWNLOAD = True
+#DMOJ_USER_DATA_DOWNLOAD = True
 
 # Directory to cache user data downloads.
 # It is the administrator's responsibility to clean up old files.
@@ -270,6 +270,9 @@ DMOJ_CONTEST_DATA_INTERNAL = '/contestdatacache'
 # How often contest data can be exported.
 # This applies per contest, not per user.
 DMOJ_CONTEST_DATA_DOWNLOAD_RATELIMIT = datetime.timedelta(days=1)
+
+# Uncomment to disable user registration
+#REGISTRATION_OPEN = False
 
 #############
 ## Mathoid ##
@@ -343,10 +346,3 @@ LOGGING = {
 # sent only with an HTTPS connection.
 #CSRF_COOKIE_SECURE = True
 #SESSION_COOKIE_SECURE = True
-
-REGISTRATION_OPEN = False
-X_FRAME_OPTIONS = 'DENY'
-
-FILE_UPLOAD_PERMISSIONS = 0o644
-
-VNOJ_CP_TICKET = 5

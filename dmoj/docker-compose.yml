@@ -98,7 +98,6 @@ services:
     env_file: [environment/mysql.env, environment/site.env]
     networks: [site, nginx, db]
     ports:
-      - 9998:9998
       - 9999:9999
     depends_on: [base, db, redis]
   wsevent:

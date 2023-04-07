@@ -347,3 +347,6 @@ LOGGING = {
 # sent only with an HTTPS connection.
 #CSRF_COOKIE_SECURE = True
 #SESSION_COOKIE_SECURE = True
+
+# MOSS api key (should be an integer)
+#MOSS_API_KEY = None

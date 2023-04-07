@@ -136,6 +136,7 @@ DMOJ_RESOURCES = '/assets/resources/'
 
 ## DMOJ site display settings.
 SITE_NAME = 'HNOJ'
+SITE_FULL_URL = 'https://hnoj.edu.vn'
 SITE_LONG_NAME = 'HNOJ: Hanoi Online Judge'
 SITE_ADMIN_EMAIL = 'admin@example.com'
 TERMS_OF_SERVICE_URL = None

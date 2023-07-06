@@ -39,7 +39,7 @@ $ ./scripts/migrate
 ```
 
 You will also need to generate the static files:
-```
+```sh
 $ ./scripts/copy_static
 ```
 

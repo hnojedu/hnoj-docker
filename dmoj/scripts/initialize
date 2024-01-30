@@ -1,8 +1,11 @@
 #!/bin/bash
 cd $(dirname $(dirname $0)) || exit
 
-mkdir problems media
+mkdir -p environment problems media nginx
 
-cp ../config.js repo/websocket/
-cp ../local_settings.py repo/dmoj/
-cp ../uwsgi.ini repo/
+cp ../config_template/wsevent/config.js repo/websocket/
+cp ../config_template/site/local_settings.py repo/dmoj/
+cp ../config_template/site/uwsgi.ini repo/
+
+cp ../config_template/environment/*.env environment/
+cp ../config_template/nginx/nginx.conf nginx/

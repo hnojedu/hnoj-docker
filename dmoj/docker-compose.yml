@@ -13,41 +13,15 @@ services:
     image: redis:alpine
     restart: unless-stopped
     networks: [site]
-  # texoid:
-  #   build:
-  #     context: .
-  #     dockerfile: ./texoid/Dockerfile
-  #   image: ninjaclasher/dmoj-texoid
-  #   init: true
-  #   restart: unless-stopped
-  #   networks: [site]
-  # pdfoid:
-  #   build:
-  #     context: .
-  #     dockerfile: ./pdfoid/Dockerfile
-  #   image: ninjaclasher/dmoj-pdfoid
-  #   init: true
-  #   restart: unless-stopped
-  #   networks: [site]
-  #   cap_add:
-  #     - SYS_ADMIN
-  # mathoid:
-  #   build:
-  #     context: .
-  #     dockerfile: ./mathoid/Dockerfile
-  #   image: ninjaclasher/dmoj-mathoid
-  #   init: true
-  #   restart: unless-stopped
-  #   volumes:
-  #     - ./mathoid/config.yaml:/node_modules/mathoid/config.yaml
-  #   networks: [site]
   base:
+    container_name: hnoj_base
     build:
       context: .
       dockerfile: ./base/Dockerfile
     image: hnoj/hnoj-base
     network_mode: none
   site:
+    container_name: hnoj_site
     build:
       context: .
       dockerfile: ./site/Dockerfile
@@ -126,7 +100,7 @@ services:
       - contestdatacache:/contestdatacache/
       - cache:/cache/
       - ./media/:/media/
-      - ./nginx/conf.d/:/etc/nginx/conf.d/
+      - ./nginx/:/etc/nginx/conf.d/
     networks: [nginx]
     depends_on: [site, wsevent]
 networks:

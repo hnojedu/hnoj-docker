@@ -5,15 +5,14 @@ RUN apt-get update && \
         git gcc g++ make curl gettext wget \
         libxml2-dev libxslt1-dev zlib1g-dev \
         mariadb-client libmariadb-dev \
-        libjpeg-dev debconf-utils && \
-    curl -sL https://deb.nodesource.com/setup_16.x | bash - && \
+        libjpeg-dev debconf-utils pkg-config && \
+    curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
     apt-get install -y nodejs && \
     apt-get autoremove -y && \
     rm -rf /var/lib/apt/lists/*
 
 RUN npm install -g sass postcss-cli postcss autoprefixer
-RUN pip3 install \
-        pymysql mysqlclient==2.1.1 websocket-client uwsgi django-redis redis
 
-COPY repo/requirements.txt .
-RUN pip3 install -r requirements.txt
+COPY repo/requirements.txt repo/additional_requirements.txt ./
+RUN pip3 install -r requirements.txt && \
+    pip3 install -r additional_requirements.txt

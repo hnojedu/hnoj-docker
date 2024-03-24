@@ -136,7 +136,7 @@ DMOJ_RESOURCES = '/assets/resources/'
 
 ## DMOJ site display settings.
 SITE_NAME = 'HNOJ'
-SITE_FULL_URL = 'https://hnoj.edu.vn'
+SITE_FULL_URL = os.environ.get('SITE_FULL_URL', 'https://{host}'.format(host=HOST))
 SITE_LONG_NAME = 'HNOJ: Hanoi Online Judge'
 SITE_ADMIN_EMAIL = 'admin@example.com'
 TERMS_OF_SERVICE_URL = None
@@ -179,6 +179,8 @@ BAD_MAIL_PROVIDERS = set()
 ## Event server.
 # Uncomment to enable live updating.
 EVENT_DAEMON_USE = True
+EVENT_DAEMON_SUBMISSION_KEY = os.environ.get('EVENT_DAEMON_SUBMISSION_KEY', '')
+EVENT_DAEMON_CONTEST_KEY = os.environ.get('EVENT_DAEMON_CONTEST_KEY', '')
 
 # Uncomment this section to use websocket/daemon.js included in the site.
 #EVENT_DAEMON_POST = '<ws:// URL to post to>'

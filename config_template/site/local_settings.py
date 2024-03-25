@@ -351,4 +351,10 @@ LOGGING = {
 #SESSION_COOKIE_SECURE = True
 
 # MOSS api key (should be an integer)
-#MOSS_API_KEY = None
+try:
+    MOSS_API_KEY = int(os.environ.get('MOSS_API_KEY'))
+except (KeyError, ValueError):
+    MOSS_API_KEY = None
+
+# Contest mode
+VNOJ_OFFICIAL_CONTEST_MODE = os.environ.get('OFFICIAL_CONTEST_MODE', '0') == '1'

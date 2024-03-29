@@ -53,6 +53,7 @@ services:
       - userdatacache:/userdatacache/
       - contestdatacache:/contestdatacache/
       - ./repo/:/site/
+      - ./media:/media/
     working_dir: /site/
     env_file: [environment/mysql.env, environment/site.env]
     networks: [site, db]

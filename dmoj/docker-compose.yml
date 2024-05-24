@@ -88,6 +88,17 @@ services:
     working_dir: /app/site
     env_file: [environment/mysql.env, environment/site.env]
     networks: [site, nginx]
+  jnotify:
+    container_name: hnoj_jnotify
+    build:
+      context: .
+      dockerfile: ./jnotify/Dockerfile
+    image: hnoj/hnoj-jnotify
+    init: true
+    restart: unless-stopped
+    volumes:
+      - ./jnotify/jnotify.conf:/jnotify.conf
+      - ./problems/:/problems/
   nginx:
     container_name: hnoj_nginx
     image: nginx:alpine

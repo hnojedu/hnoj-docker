@@ -3,9 +3,11 @@ cd $(dirname $(dirname $0)) || exit
 
 mkdir -p environment problems media nginx
 
-cp ../config_template/wsevent/config.js repo/websocket/
-cp ../config_template/site/local_settings.py repo/dmoj/
-cp ../config_template/site/uwsgi.ini repo/
+cp -n ../config_template/wsevent/config.js repo/websocket/
+cp -n ../config_template/site/local_settings.py repo/dmoj/
+cp -n ../config_template/site/uwsgi.ini repo/
 
-cp ../config_template/environment/*.env environment/
-cp ../config_template/nginx/nginx.conf nginx/
+cp -n ../config_template/environment/*.env environment/
+cp -n ../config_template/nginx/nginx.conf nginx/
+
+cp -n ../config_template/jnotify/jnotify.conf jnotify/

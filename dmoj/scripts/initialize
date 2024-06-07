@@ -3,6 +3,8 @@ cd $(dirname $(dirname $0)) || exit
 
 mkdir -p environment problems media nginx
 
+cp -n ../config_template/compose.yml .
+
 cp -n ../config_template/wsevent/config.js repo/websocket/
 cp -n ../config_template/site/local_settings.py repo/dmoj/
 cp -n ../config_template/site/uwsgi.ini repo/

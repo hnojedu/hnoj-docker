@@ -137,6 +137,7 @@ DMOJ_RESOURCES = '/assets/resources/'
 ## DMOJ site display settings.
 SITE_NAME = 'HNOJ'
 SITE_FULL_URL = os.environ.get('SITE_FULL_URL', 'https://{host}'.format(host=HOST))
+JUDGE_SITE_FULL_URL = SITE_FULL_URL
 SITE_LONG_NAME = 'HNOJ: Hanoi Online Judge'
 SITE_ADMIN_EMAIL = 'admin@example.com'
 TERMS_OF_SERVICE_URL = None

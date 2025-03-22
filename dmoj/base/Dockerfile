@@ -13,5 +13,4 @@ RUN apt-get update && \
 
 COPY repo/requirements.txt repo/additional_requirements.txt repo/package.json repo/package-lock.json ./
 RUN npm install && \
-    pip3 install -r requirements.txt && \
-    pip3 install -r additional_requirements.txt
+    pip3 install -r requirements.txt -r additional_requirements.txt

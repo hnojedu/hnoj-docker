@@ -28,7 +28,7 @@ INSTALLED_APPS += ()
 CACHES = {
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': 'redis://redis:6379/1',
+        'LOCATION': os.environ.get('REDIS_CACHE_URL', 'redis://redis:6379/1'),
     }
 }
 
@@ -163,7 +163,7 @@ DMOJ_PROBLEM_DATA_ROOT = '/problems/'
 BRIDGED_JUDGE_ADDRESS = [('bridged', 9999)]
 
 # The bridged daemon bind address and port to communicate with the site.
-BRIDGED_DJANGO_ADDRESS = [('bridged', 9998)]
+BRIDGED_DJANGO_ADDRESS = [(os.environ.get('BRIDGED_DJANGO_ADDRESS_HOST', 'bridged'), 9998)]
 
 ## DMOJ features.
 # Set to True to enable full-text searching for problems.
@@ -187,7 +187,7 @@ EVENT_DAEMON_CONTEST_KEY = os.environ.get('EVENT_DAEMON_CONTEST_KEY', '')
 #EVENT_DAEMON_POST = '<ws:// URL to post to>'
 
 # If you are using the defaults from the guide, it is this:
-EVENT_DAEMON_POST = 'ws://wsevent:15101/'
+EVENT_DAEMON_POST = os.environ.get('EVENT_DAEMON_POST', 'ws://wsevent:15101/')
 
 # These are the publicly accessed interface configurations.
 # They should match those used by the script.
@@ -202,8 +202,8 @@ EVENT_DAEMON_POLL = '/channels/'
 #EVENT_DAEMON_AMQP_EXCHANGE = '<AMQP exchange to use>'
 
 # Celery
-CELERY_BROKER_URL = 'redis://redis:6379/0'
-CELERY_RESULT_BACKEND = 'redis://redis:6379/0'
+CELERY_BROKER_URL = os.environ.get('CELERY_BROKER_URL', 'redis://redis:6379/0')
+CELERY_RESULT_BACKEND = os.environ.get('CELERY_RESULT_BACKEND', 'redis://redis:6379/0')
 
 ## CDN control.
 # Base URL for a copy of ace editor.

@@ -3,6 +3,8 @@ services:
     container_name: hnoj_mysql
     image: mariadb
     restart: unless-stopped
+    ports:
+      - 3306:3306
     volumes:
       - ./database/:/var/lib/mysql/
     env_file: [environment/mysql.env, environment/mysql-admin.env]
@@ -11,6 +13,8 @@ services:
     container_name: hnoj_redis
     image: redis:alpine
     restart: unless-stopped
+    ports:
+      - 6379:6379
     networks: [site]
   base:
     container_name: hnoj_base
@@ -39,7 +43,7 @@ services:
     working_dir: /site/
     env_file: [environment/mysql.env, environment/site.env]
     networks: [site, nginx, db]
-    depends_on: [base, db, redis]
+    depends_on: [base]
   celery:
     container_name: hnoj_celery
     build:
@@ -72,6 +76,7 @@ services:
     env_file: [environment/mysql.env, environment/site.env]
     networks: [site, nginx, db]
     ports:
+      - 9998:9998
       - 9999:9999
     depends_on: [base, db, redis]
   wsevent:
@@ -82,6 +87,8 @@ services:
     image: hnoj/hnoj-wsevent
     init: true
     restart: unless-stopped
+    ports:
+      - 15101:15101
     volumes:
       - ./repo/:/app/site/
     working_dir: /app/site
@@ -113,7 +120,7 @@ services:
       - ./media/:/media/
       - ./nginx/:/etc/nginx/conf.d/
     networks: [nginx]
-    depends_on: [site, wsevent]
+    depends_on: [site]
 networks:
   site:
   db:

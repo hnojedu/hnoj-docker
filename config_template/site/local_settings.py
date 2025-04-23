@@ -1,4 +1,3 @@
-
 #####################################
 ########## Django settings ##########
 #####################################
@@ -126,7 +125,7 @@ STATIC_ROOT = '/assets/static/'
 STATIC_URL = '/static/'
 
 # Uncomment to use hashed filenames with the cache framework.
-STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.CachedStaticFilesStorage'
 
 DMOJ_RESOURCES = '/assets/resources/'
 
@@ -163,7 +162,9 @@ DMOJ_PROBLEM_DATA_ROOT = '/problems/'
 BRIDGED_JUDGE_ADDRESS = [('bridged', 9999)]
 
 # The bridged daemon bind address and port to communicate with the site.
-BRIDGED_DJANGO_ADDRESS = [(os.environ.get('BRIDGED_DJANGO_ADDRESS_HOST', 'bridged'), 9998)]
+BRIDGED_DJANGO_ADDRESS = [('bridged', 9998)]
+
+BRIDGED_DJANGO_CONNECT = (os.environ.get('BRIDGED_DJANGO_CONNECT_HOST', 'bridged'), 9998)
 
 ## DMOJ features.
 # Set to True to enable full-text searching for problems.
@@ -356,6 +357,3 @@ try:
     MOSS_API_KEY = int(os.environ.get('MOSS_API_KEY'))
 except (KeyError, ValueError):
     MOSS_API_KEY = None
-
-# Contest mode
-VNOJ_OFFICIAL_CONTEST_MODE = os.environ.get('OFFICIAL_CONTEST_MODE', '0') == '1'

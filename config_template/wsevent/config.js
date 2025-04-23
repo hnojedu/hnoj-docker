@@ -1,4 +1,4 @@
-const config = {
+module.exports = {
     get_host: 'wsevent',
     get_port: 15100,
     post_host: 'wsevent',
@@ -7,5 +7,3 @@ const config = {
     http_port: 15102,
     long_poll_timeout: 29000,
 };
-
-export default config;

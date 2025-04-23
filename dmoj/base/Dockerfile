@@ -11,6 +11,6 @@ RUN apt-get update && \
     apt-get autoremove -y && \
     rm -rf /var/lib/apt/lists/*
 
-COPY repo/requirements.txt repo/additional_requirements.txt repo/package.json repo/package-lock.json ./
-RUN npm install && \
+COPY repo/requirements.txt repo/additional_requirements.txt ./
+RUN npm install -g sass postcss-cli postcss autoprefixer && \
     pip3 install -r requirements.txt -r additional_requirements.txt

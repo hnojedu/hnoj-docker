@@ -1,9 +1,7 @@
 FROM node:alpine
 
 WORKDIR /app/
-COPY repo/package.json .
-COPY repo/package-lock.json .
-RUN npm install
+RUN npm install qu ws simplesets
 
 EXPOSE 15100
 EXPOSE 15101

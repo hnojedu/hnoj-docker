@@ -8,4 +8,4 @@ RUN apt-get update && \
 COPY jnotify/jnotify.sh /
 RUN chmod +x /jnotify.sh
 
-CMD ["/jnotify.sh", "/problems", "/jnotify/jnotify.conf"]
+CMD ["/jnotify.sh", "/problems", "/jnotify.d/jnotify.conf"]

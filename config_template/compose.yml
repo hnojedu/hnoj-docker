@@ -103,7 +103,7 @@ services:
     init: true
     restart: unless-stopped
     volumes:
-      - ./jnotify/:/jnotify/
+      - ./jnotify/jnotify.d/:/jnotify.d/
       - ./problems/:/problems/
   nginx:
     container_name: hnoj_nginx

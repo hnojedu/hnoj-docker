@@ -12,4 +12,4 @@ cp -n ../config_template/site/uwsgi.ini repo/
 cp -n ../config_template/environment/*.env environment/
 cp -n ../config_template/nginx/nginx.conf nginx/
 
-cp -n ../config_template/jnotify/jnotify.conf jnotify/
+cp -n ../config_template/jnotify/jnotify.d jnotify/
